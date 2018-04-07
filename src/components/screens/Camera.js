@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { saveImage } from '../../data/ducks/imageDuck';
+import flipCamera from '../../../assets/flipCamera.png';
 
 class CameraScreen extends React.Component {
 	state = {
@@ -105,25 +106,15 @@ class CameraScreen extends React.Component {
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								style={styles.button}
+								style={styles.snapButton}
 								onPress={this.snapButtonPressed}
-							>
-								<Text
-									style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
-								>
-									Take pic
-								</Text>
-							</TouchableOpacity>
+							/>
 
 							<TouchableOpacity
 								style={styles.button}
 								onPress={this.switchButtonPressed}
 							>
-								<Text
-									style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
-								>
-									Flip
-								</Text>
+								<Image style={styles.flipCamera} source={flipCamera} />
 							</TouchableOpacity>
 						</View>
 					</Camera>
@@ -136,7 +127,21 @@ class CameraScreen extends React.Component {
 const styles = StyleSheet.create({
 	button: {
 		width: 100,
-		height: 100
+		height: 100,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	snapButton: {
+		width: 100,
+		height: 100,
+		borderColor: 'white',
+		borderRadius: 50,
+		borderWidth: 5,
+		backgroundColor: 'rgba(0,0,0,0.5)'
+	},
+	flipCamera: {
+		width: 50,
+		height: 50
 	},
 	camera: {
 		flex: 1
@@ -148,7 +153,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'flex-end'
+		alignItems: 'flex-end',
+		marginBottom: 10
 	},
 	image: {
 		width: 100,
