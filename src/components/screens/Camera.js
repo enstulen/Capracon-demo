@@ -56,7 +56,7 @@ class CameraScreen extends React.Component {
 	};
 
 	imageButtonPressed = () => {
-		this.props.navigation.navigate('ShowPhotos');
+		this.props.navigation.goBack();
 	};
 
 	render() {
