@@ -5,7 +5,8 @@ import {
 	TouchableOpacity,
 	StyleSheet,
 	FlatList,
-	Image
+	Image,
+	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import ImageListItem from '../list/listItems/ImageListItem';
@@ -61,15 +62,18 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
-		width: 100,
-		height: 100,
+		width: Dimensions.get('window').width / 7,
+		height: Dimensions.get('window').width / 7,
 		position: 'absolute',
 		right: 10,
 		bottom: 10,
-		backgroundColor: 'blue',
-		borderRadius: 50,
+		backgroundColor: '#E63462',
+		borderRadius: Dimensions.get('window').width / 7 / 2,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		shadowOpacity: 0.4,
+		shadowRadius: 3,
+		shadowOffset: { height: 5, width: 5 }
 	},
 	buttonText: {
 		color: 'white',

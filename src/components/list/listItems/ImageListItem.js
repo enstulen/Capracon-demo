@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 5
 	},
 	image: {
+		borderRadius: 5,
 		height: Dimensions.get('window').height / 4
 	}
 });

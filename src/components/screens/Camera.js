@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import { connect } from 'react-redux';
-import { incrementAsync } from '../../data/ducks/counterDuck';
 import { saveImage } from '../../data/ducks/imageDuck';
 
 class CameraScreen extends React.Component {
@@ -26,6 +25,26 @@ class CameraScreen extends React.Component {
 		return true;
 	}
 
+	// BUTTONS //
+
+	switchButtonPressed = () => {
+		this.setState({
+			type:
+				this.state.type === Camera.Constants.Type.back
+					? Camera.Constants.Type.front
+					: Camera.Constants.Type.back
+		});
+	};
+	snapButtonPressed = () => {
+		this.snap().then(photo => {
+			this.props.saveImage(photo);
+		});
+	};
+
+	imageButtonPressed = () => {
+		this.props.navigation.goBack();
+	};
+
 	snap = async () => {
 		if (this.camera) {
 			let photo = await this.camera.takePictureAsync({
@@ -33,30 +52,6 @@ class CameraScreen extends React.Component {
 			});
 			return photo;
 		}
-	};
-
-	//--------------//
-
-	switchButtonPressed = () => {
-		console.log(this.props.imagesCounter);
-
-		// this.setState({
-		// 	type:
-		// 		this.state.type === Camera.Constants.Type.back
-		// 			? Camera.Constants.Type.front
-		// 			: Camera.Constants.Type.back
-		// });
-	};
-	testButtonPressed = () => {
-		this.snap().then(photo => {
-			this.props.saveImage(photo);
-		});
-		console.log(this.props.imagesCounter);
-		// this.props.incrementAsync();
-	};
-
-	imageButtonPressed = () => {
-		this.props.navigation.goBack();
 	};
 
 	render() {
@@ -74,7 +69,25 @@ class CameraScreen extends React.Component {
 					>
 						<View style={styles.overlay}>
 							<TouchableOpacity
-								style={styles.switchButton}
+								style={styles.button}
+								onPress={this.imageButtonPressed}
+							>
+								<Image style={styles.image} source={{ uri: base64Icon }} />
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.button}
+								onPress={this.snapButtonPressed}
+							>
+								<Text
+									style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
+								>
+									Take pic
+								</Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.button}
 								onPress={this.switchButtonPressed}
 							>
 								<Text
@@ -82,26 +95,6 @@ class CameraScreen extends React.Component {
 								>
 									Flip
 								</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								style={styles.switchButton}
-								onPress={this.testButtonPressed}
-							>
-								<Text
-									style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
-								>
-									Navigate
-								</Text>
-							</TouchableOpacity>
-							<Text
-								style={{ fontSize: 18, marginBottom: 10, color: 'white' }}
-							/>
-							<TouchableOpacity
-								style={styles.imageButton}
-								onPress={this.imageButtonPressed}
-							>
-								<Image style={styles.image} source={{ uri: base64Icon }} />
 							</TouchableOpacity>
 						</View>
 					</Camera>
@@ -112,10 +105,9 @@ class CameraScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	switchButton: {
-		flex: 0.1,
-		alignSelf: 'flex-end',
-		alignItems: 'center'
+	button: {
+		width: 100,
+		height: 100
 	},
 	camera: {
 		flex: 1
@@ -124,12 +116,14 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	overlay: {
-		flex: 1
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'flex-end'
 	},
 	image: {
 		width: 100,
-		height: 100,
-		resizeMode: Image.resizeMode.contain
+		height: 100
 	}
 });
 
@@ -140,7 +134,6 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 const mapStateToProps = state => ({
-	imagesCounter: state.image.images,
-	counter: state.counter.counter
+	images: state.image.images
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CameraScreen);
