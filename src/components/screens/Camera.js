@@ -9,8 +9,9 @@ class CameraScreen extends React.Component {
 		hasCameraPermission: null,
 		type: Camera.Constants.Type.back,
 		faceDetectionMode: Camera.Constants.FaceDetection.Mode.fast,
-		faceDetectionClassifications: Camera.Constants.FaceDetection.Classifications.all,
-		cameraReady: true,
+		faceDetectionClassifications:
+			Camera.Constants.FaceDetection.Classifications.all,
+		cameraReady: true
 	};
 
 	// PERMISSIONS //
@@ -48,23 +49,34 @@ class CameraScreen extends React.Component {
 		this.props.navigation.goBack();
 	};
 
-	onFacesDetected = (detected) => {
-		const smilingFaces = detected.faces.filter(face => face.smilingProbability > 0.7);
-		console.log(smilingFaces)
+	snap = async () => {
+		if (this.camera) {
+			let photo = await this.camera.takePictureAsync({
+				base64: true
+			});
+			return photo;
+		}
+	};
+
+	onFacesDetected = detected => {
+		const smilingFaces = detected.faces.filter(
+			face => face.smilingProbability > 0.7
+		);
+		console.log(smilingFaces);
 		if (smilingFaces.length > 0 && this.state.cameraReady) {
 			this.setState({
-				cameraReady: false,
-			})
+				cameraReady: false
+			});
 			this.snap().then(photo => {
 				this.props.saveImage(photo);
 				setTimeout(() => {
 					this.setState({
-						cameraReady: true,
-					})
-				}, 3000)
-			})	
+						cameraReady: true
+					});
+				}, 3000);
+			});
 		}
-	}
+	};
 
 	render() {
 		var base64Icon =
@@ -80,7 +92,9 @@ class CameraScreen extends React.Component {
 						}}
 						onFacesDetected={this.onFacesDetected}
 						faceDetectionMode={this.state.faceDetectionMode}
-						faceDetectionClassifications={this.state.faceDetectionClassifications}
+						faceDetectionClassifications={
+							this.state.faceDetectionClassifications
+						}
 					>
 						<View style={styles.overlay}>
 							<TouchableOpacity
