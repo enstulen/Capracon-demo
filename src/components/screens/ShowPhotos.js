@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import ImageListItem from '../list/listItems/ImageListItem';
 
 class ShowPhotos extends React.Component {
-	keyExtractor = (item, index) => item.id;
+	keyExtractor = (item, index) => item.uri;
 
 	onPressItem = image => {
 		this.props.navigation.navigate('ShowSinglePhoto', { image: image });
@@ -37,6 +37,10 @@ class ShowPhotos extends React.Component {
 					extraData={this.state}
 					keyExtractor={this.keyExtractor}
 					renderItem={this.renderItem}
+					contentContainerStyle={styles.list}
+					numColumns={4}
+					columnWrapperStyle={{ margin: 5 }}
+					horizontal={false}
 				/>
 				<TouchableOpacity style={styles.button} onPress={this.addButtonPressed}>
 					<Text style={styles.buttonText}>+</Text>
@@ -70,5 +74,8 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: 'white',
 		fontSize: 35
+	},
+	list: {
+		flexDirection: 'column'
 	}
 });
