@@ -8,30 +8,17 @@ import {
 	Image
 } from 'react-native';
 import { connect } from 'react-redux';
-
-class ImageListItem extends React.Component {
-	_onPress = () => {
-		this.props.onPressItem(this.props.id);
-	};
-
-	render() {
-		var base64String = 'data:image/png;base64,' + this.props.image;
-		return (
-			<TouchableOpacity onPress={this._onPress}>
-				<Image
-					style={{ width: 100, height: 100 }}
-					source={{ uri: base64String }}
-				/>
-			</TouchableOpacity>
-		);
-	}
-}
+import ImageListItem from '../list/listItems/ImageListItem';
 
 class ShowPhotos extends React.Component {
-	keyExtractor = (item, index) => item.id;
+	keyExtractor = (item, index) => item.uri;
 
-	onPressItem = (id: string) => {
-		console.log('pressed');
+	onPressItem = image => {
+		this.props.navigation.navigate('ShowSinglePhoto', { image: image });
+	};
+
+	addButtonPressed = () => {
+		this.props.navigation.navigate('Camera');
 	};
 
 	renderItem = ({ item }) => (
@@ -44,12 +31,21 @@ class ShowPhotos extends React.Component {
 
 	render() {
 		return (
-			<FlatList
-				data={this.props.images}
-				extraData={this.state}
-				keyExtractor={this.keyExtractor}
-				renderItem={this.renderItem}
-			/>
+			<View style={styles.container}>
+				<FlatList
+					data={this.props.images}
+					extraData={this.state}
+					keyExtractor={this.keyExtractor}
+					renderItem={this.renderItem}
+					contentContainerStyle={styles.list}
+					numColumns={4}
+					columnWrapperStyle={{ margin: 5 }}
+					horizontal={false}
+				/>
+				<TouchableOpacity style={styles.button} onPress={this.addButtonPressed}>
+					<Text style={styles.buttonText}>+</Text>
+				</TouchableOpacity>
+			</View>
 		);
 	}
 }
@@ -60,18 +56,26 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(ShowPhotos);
 
 const styles = StyleSheet.create({
-	switchButton: {
-		flex: 0.1,
-		alignSelf: 'flex-end',
-		alignItems: 'center'
-	},
-	camera: {
-		flex: 1
-	},
 	container: {
 		flex: 1
 	},
-	overlay: {
-		flex: 1
+	button: {
+		flex: 1,
+		width: 100,
+		height: 100,
+		position: 'absolute',
+		right: 10,
+		bottom: 10,
+		backgroundColor: 'blue',
+		borderRadius: 50,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	buttonText: {
+		color: 'white',
+		fontSize: 35
+	},
+	list: {
+		flexDirection: 'column'
 	}
 });
