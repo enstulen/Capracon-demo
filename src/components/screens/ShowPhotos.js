@@ -6,7 +6,8 @@ import {
 	StyleSheet,
 	FlatList,
 	Image,
-	Dimensions
+	Dimensions,
+	StatusBar
 } from 'react-native';
 import { connect } from 'react-redux';
 import ImageListItem from '../list/listItems/ImageListItem';
@@ -31,6 +32,7 @@ class ShowPhotos extends React.Component {
 	);
 
 	render() {
+		StatusBar.setBarStyle('light-content', true);
 		return (
 			<View style={styles.container}>
 				<FlatList
