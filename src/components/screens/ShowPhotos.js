@@ -15,14 +15,6 @@ import ImageListItem from '../list/listItems/ImageListItem';
 class ShowPhotos extends React.Component {
 	keyExtractor = (item, index) => item.uri;
 
-	onPressItem = image => {
-		this.props.navigation.navigate('ShowSinglePhoto', { image: image });
-	};
-
-	addButtonPressed = () => {
-		this.props.navigation.navigate('Camera');
-	};
-
 	renderItem = ({ item }) => (
 		<ImageListItem
 			id={item.uri}
@@ -30,6 +22,14 @@ class ShowPhotos extends React.Component {
 			image={item.base64}
 		/>
 	);
+
+	onPressItem = image => {
+		this.props.navigation.navigate('ShowSinglePhoto', { image: image });
+	};
+
+	addButtonPressed = () => {
+		this.props.navigation.navigate('Camera');
+	};
 
 	render() {
 		StatusBar.setBarStyle('light-content', true);
@@ -64,13 +64,13 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flex: 1,
-		width: Dimensions.get('window').width / 7,
-		height: Dimensions.get('window').width / 7,
+		width: 80,
+		height: 80,
 		position: 'absolute',
 		right: 10,
 		bottom: 10,
 		backgroundColor: '#E63462',
-		borderRadius: Dimensions.get('window').width / 7 / 2,
+		borderRadius: 40,
 		alignItems: 'center',
 		justifyContent: 'center',
 		shadowOpacity: 0.4,

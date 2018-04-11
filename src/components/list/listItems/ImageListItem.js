@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-	Text,
-	View,
-	TouchableOpacity,
-	StyleSheet,
-	Image,
-	Dimensions
-} from 'react-native';
-
-let padding = 10;
+import { TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 
 export default class ImageListItem extends React.Component {
 	onPress = () => {

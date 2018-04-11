@@ -9,6 +9,7 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
 	switch (action.type) {
 		case SAVE_IMAGE: {
+			console.log('save_image redux');
 			return { ...state, images: [...state.images, action.payload] };
 		}
 
